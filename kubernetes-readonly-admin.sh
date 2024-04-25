@@ -97,7 +97,6 @@ EOF4
 # Generate config manifest for the cluster
 echo 
 echo
-echo -e "COPY CONTENTS BELOW THIS LINE -------------------------------------------"
 
 export CLUSTER_NAME=$(kubectl config current-context)
 export CLUSTER_SERVER=$(kubectl cluster-info | grep --color=never "control plane" | awk '{print $NF}')
@@ -125,3 +124,5 @@ contexts:
   name: k8s-security-assessment
 current-context: k8s-security-assessment
 EOF5
+
+echo -e "All done! kubeconfig-sa-readonly.yml generated. Share this file with Appsecco."
