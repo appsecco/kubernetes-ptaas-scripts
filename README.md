@@ -28,7 +28,7 @@ You can pass the shell script to cURL directly using the raw GitHub URL. The scr
 curl -sS https://raw.githubusercontent.com/appsecco/kubernetes-ptaas-scripts/main/kubernetes-readonly-admin.sh | bash
 ```
 
-A file called `kubeconfig-sa-readonly.yml` will be created.
+A file called `kubeconfig-sa-readonly-TIMESTAMP` will be created in a folder called `appsecco-k8s-assessment-kubeconfigs`. For example - `kubeconfig-sa-readonly-29-04-2024-16-54-28.yml`
 
 ### Kubeconfig SA Specific Namespace Pod Creator
 
@@ -38,6 +38,6 @@ You can pass the shell script to cURL directly using the raw GitHub URL. The scr
 curl -sS https://raw.githubusercontent.com/appsecco/kubernetes-ptaas-scripts/main/kubernetes-sa-pod-creator.sh | bash
 ```
 
-A file called `kubeconfig-sa-pod-creator.yml` will be created.
+A file called `kubeconfig-sa-pod-creator-TIMESTAMP.yml` will be created in a folder called `appsecco-k8s-assessment-kubeconfigs`. For example - `kubeconfig-sa-pod-creator-29-04-2024-18-49-38.yml`
 
 Share these yml files with Appsecco.
