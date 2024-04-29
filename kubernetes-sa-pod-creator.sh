@@ -102,6 +102,10 @@ EOF5
 echo 
 echo
 
+export foldername="appsecco-k8s-assessment-kubeconfigs"
+mkdir $foldername
+export suffix="$(date +%d-%m-%Y-%H-%M-%S)"
+
 export CLUSTER_NAME=$(kubectl config current-context)
 export CLUSTER_SERVER=$(kubectl cluster-info | grep --color=never "control plane" | awk '{print $NF}')
 export CLUSTER_SA_SECRET_NAME=$(kubectl -n k8s-security-assessment get sa pod-creator-sa -o jsonpath='{ $.secrets[0].name }')
@@ -109,7 +113,7 @@ export CLUSTER_SA_TOKEN_NAME=$(kubectl -n k8s-security-assessment get secret | g
 export CLUSTER_SA_TOKEN=$(kubectl -n k8s-security-assessment get secret $CLUSTER_SA_TOKEN_NAME -o "jsonpath={.data.token}" | base64 -d)
 export CLUSTER_SA_CRT=$(kubectl -n k8s-security-assessment get secret $CLUSTER_SA_TOKEN_NAME -o "jsonpath={.data['ca\.crt']}")
 
-cat <<EOF5 > kubeconfig-sa-pod-creator.yml
+cat <<EOF5 > $foldername/kubeconfig-sa-pod-creator-$suffix.yml
 apiVersion: v1
 kind: Config
 users:
@@ -129,4 +133,4 @@ contexts:
 current-context: k8s-security-assessment-pod-crud
 EOF5
 
-echo -e "All done! kubeconfig-sa-pod-creator.yml generated. Share this file with Appsecco."
+echo -e "All done! $foldername/kubeconfig-sa-pod-creator-$suffix.yml generated. Share this file with Appsecco."
