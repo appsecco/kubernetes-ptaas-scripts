@@ -96,11 +96,17 @@ EOF4
 
 # Generate config manifest for the cluster
 echo 
-echo
 
 export foldername="appsecco-k8s-assessment-kubeconfigs"
-mkdir $foldername
+if [ ! -d "$foldername" ]; then
+  mkdir $foldername
+fi
 export suffix="$(date +%d-%m-%Y-%H-%M-%S)"
+
+echo -e "${GREEN}Generating kubeconfig in folder $foldername ${COLOR_OFF}"
+
+export T=$TERM
+export TERM=dumb
 
 export CLUSTER_NAME=$(kubectl config current-context)
 export CLUSTER_SERVER=$(kubectl cluster-info | grep --color=never "control plane" | awk '{print $NF}')
@@ -108,6 +114,8 @@ export CLUSTER_SA_SECRET_NAME=$(kubectl -n default get sa appsecco-cluster-admin
 export CLUSTER_SA_TOKEN_NAME=$(kubectl -n default get secret | grep --color=never $CLUSTER_SA_SECRET_NAME | awk '{print $1}')
 export CLUSTER_SA_TOKEN=$(kubectl -n default get secret $CLUSTER_SA_TOKEN_NAME -o "jsonpath={.data.token}" | base64 -d)
 export CLUSTER_SA_CRT=$(kubectl -n default get secret $CLUSTER_SA_TOKEN_NAME -o "jsonpath={.data['ca\.crt']}")
+
+export TERM=$T
 
 cat <<EOF5 > $foldername/kubeconfig-sa-readonly-$suffix.yml
 apiVersion: v1
@@ -124,7 +132,7 @@ clusters:
 contexts:
 - context:
     cluster: $CLUSTER_NAME
-    user: Appsecco-readonly-user
+    user: appsecco-readonly-user
   name: k8s-security-assessment
 current-context: k8s-security-assessment
 EOF5
